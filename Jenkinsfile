@@ -94,6 +94,13 @@ pipeline {
                         bat '''
                             powershell -NoProfile -ExecutionPolicy Bypass -Command "$content=Get-Content deployment.yaml -Raw; $content=$content.Replace('IMAGE_TAG',$env:RELEASE_TAG); Set-Content -Path deployment-rendered.yaml -Value $content -Encoding ascii"
                             if errorlevel 1 exit /b 1
+                            
+                            echo Checking Kubernetes config used by Jenkins...
+                            kubectl config current-context
+                            kubectl config view --minify -o jsonpath="{.clusters[0].cluster.server}"
+                            echo.
+                            kubectl get nodes
+                            if errorlevel 1 exit /b 1
 
                             kubectl apply -f service.yaml
                             if errorlevel 1 exit /b 1
