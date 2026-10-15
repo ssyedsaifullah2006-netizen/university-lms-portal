@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: lms-web
-          image: syedsaifu/university-lms-portal:IMAGE_TAG
+          image: syedsaifu/university-lms-portal:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 80
